@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Kubernetes - DevOps</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Aplicación DevOps con Kubernetes</h1>
+            <p class="subtitle">Frontend + Backend + MySQL en Kubernetes</p>
+        </header>
+
+        <div class="status-bar">
+            <div class="status-item">
+                <span class="label">Backend:</span>
+                <span id="backend-status" class="status">Verificando...</span>
+            </div>
+            <div class="status-item">
+                <span class="label">Última actualización:</span>
+                <span id="last-update">-</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>➕ Agregar Nuevo Item</h2>
+            <form id="item-form">
+                <input 
+                    type="text" 
+                    id="item-name" 
+                    placeholder="Nombre del item" 
+                    required
+                    autocomplete="off"
+                >
+                <textarea 
+                    id="item-description" 
+                    placeholder="Descripción (opcional)"
+                    rows="3"
+                ></textarea>
+                <button type="submit">Agregar Item</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>📋 Lista de Items</h2>
+            <div id="items-list" class="items-container">
+                <p class="loading">Cargando items...</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>🐳 Desplegado con Docker & Kubernetes | CI/CD con GitHub Actions</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
