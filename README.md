@@ -1,6 +1,16 @@
 # 🚀 Aplicación DevOps con Kubernetes
 
+[![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?style=flat&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-Ready-326CE5?style=flat&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
+[![Node.js](https://img.shields.io/badge/Node.js-18-339933?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![CI/CD](https://github.com/BarnerAcosta/kubernetes-workshop-app/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/BarnerAcosta/kubernetes-workshop-app/actions)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+> **Taller completo de Kubernetes con aplicación full-stack (Node.js + HTML/CSS/JS), manifiestos K8s y CI/CD**
+
 Proyecto completo de una aplicación web (Frontend + Backend + MySQL) desplegada en Kubernetes con CI/CD automatizado.
+
+---
 
 ## 📋 Descripción
 
@@ -71,16 +81,16 @@ dev-k8s-app/
 
 ### Prerequisitos
 
-- Docker
-- Kubernetes (Minikube, Kind, o cluster cloud)
-- kubectl configurado
-- Git
+- ✅ Docker Desktop instalado
+- ✅ Kubernetes habilitado (Docker Desktop, Minikube o Kind)
+- ✅ kubectl configurado
+- ✅ Git instalado
 
 ### 1. Clonar el repositorio
 
 ```bash
-git clone <tu-repositorio>
-cd dev-k8s-app
+git clone https://github.com/BarnerAcosta/kubernetes-workshop-app.git
+cd kubernetes-workshop-app
 ```
 
 ### 2. Construir imágenes Docker
@@ -244,14 +254,35 @@ Próximamente:
 4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
 5. Abre un Pull Request
 
+## 📚 Documentación Completa
+
+- 📖 **[DESIGN.md](DESIGN.md)** - Documento de arquitectura y diseño técnico
+- 🚀 **[KUBERNETES-SETUP.md](KUBERNETES-SETUP.md)** - Guía completa de despliegue
+- ✅ **[STATUS.md](STATUS.md)** - Estado del proyecto y checklist
+
+## 🔗 Enlaces Útiles
+
+- 🐙 **[Repositorio GitHub](https://github.com/BarnerAcosta/kubernetes-workshop-app)**
+- 🐳 **[Docker Hub](https://hub.docker.com/)** - Para publicar tus imágenes
+- ☸️ **[Kubernetes Docs](https://kubernetes.io/docs/)** - Documentación oficial
+
 ## 📄 Licencia
 
 Este proyecto es de código abierto bajo licencia MIT.
 
 ## 👨‍💻 Autor
 
-Creado como proyecto educativo para el taller de Kubernetes y DevOps.
+**Barner Acosta**  
+Proyecto educativo para el taller de Kubernetes y DevOps
+
+[![GitHub](https://img.shields.io/badge/GitHub-BarnerAcosta-181717?style=flat&logo=github)](https://github.com/BarnerAcosta)
 
 ---
 
-**¿Preguntas?** Revisa el archivo `DESIGN.md` para más detalles técnicos.
+<div align="center">
+
+**⭐ Si te fue útil este proyecto, dale una estrella en GitHub ⭐**
+
+[Reportar Bug](https://github.com/BarnerAcosta/kubernetes-workshop-app/issues) · [Solicitar Feature](https://github.com/BarnerAcosta/kubernetes-workshop-app/issues)
+
+</div>
