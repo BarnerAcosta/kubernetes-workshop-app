@@ -1,8 +1,8 @@
 # Script de Despliegue en Kubernetes
-# Siguiendo el orden especificado en el taller
+# Despliegue completo: Namespace, Secrets, ConfigMaps, MySQL, Backend y Frontend
 
 Write-Host "=====================================" -ForegroundColor Cyan
-Write-Host "Despliegue de Aplicación en Kubernetes" -ForegroundColor Cyan
+Write-Host "Despliegue de Aplicacion en Kubernetes" -ForegroundColor Cyan
 Write-Host "=====================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -13,7 +13,7 @@ if ($LASTEXITCODE -ne 0) {
     Write-Host "Error al crear el namespace" -ForegroundColor Red
     exit 1
 }
-Write-Host "✓ Namespace creado" -ForegroundColor Green
+Write-Host "OK Namespace creado" -ForegroundColor Green
 Write-Host ""
 
 # 2. Aplicar Secret (credenciales de DB)
@@ -23,7 +23,7 @@ if ($LASTEXITCODE -ne 0) {
     Write-Host "Error al crear el secret" -ForegroundColor Red
     exit 1
 }
-Write-Host "✓ Secret creado" -ForegroundColor Green
+Write-Host "OK Secret creado" -ForegroundColor Green
 Write-Host ""
 
 # 3. Aplicar ConfigMap
@@ -33,65 +33,93 @@ if ($LASTEXITCODE -ne 0) {
     Write-Host "Error al crear el configmap" -ForegroundColor Red
     exit 1
 }
-Write-Host "✓ ConfigMap creado" -ForegroundColor Green
+Write-Host "OK ConfigMap creado" -ForegroundColor Green
 Write-Host ""
 
-# 4. Deployment del Backend
-Write-Host "4. Desplegando Backend..." -ForegroundColor Yellow
+# 4. Desplegar MySQL
+Write-Host "4. Desplegando MySQL..." -ForegroundColor Yellow
+kubectl apply -f kubernetes/deployment-mysql.yaml
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "Error al desplegar MySQL" -ForegroundColor Red
+    exit 1
+}
+Write-Host "OK MySQL desplegado" -ForegroundColor Green
+Write-Host ""
+
+# 5. Service de MySQL
+Write-Host "5. Creando Service de MySQL..." -ForegroundColor Yellow
+kubectl apply -f kubernetes/service-mysql.yaml
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "Error al crear el service de MySQL" -ForegroundColor Red
+    exit 1
+}
+Write-Host "OK Service de MySQL creado" -ForegroundColor Green
+Write-Host ""
+
+Write-Host "Esperando a que MySQL este listo..." -ForegroundColor Yellow
+kubectl rollout status deployment/mysql-deployment -n dev-app --timeout=3m
+Write-Host "OK MySQL esta listo" -ForegroundColor Green
+Write-Host ""
+
+# 6. Deployment del Backend
+Write-Host "6. Desplegando Backend..." -ForegroundColor Yellow
 kubectl apply -f kubernetes/deployment-backend.yaml
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Error al desplegar el backend" -ForegroundColor Red
     exit 1
 }
-Write-Host "✓ Backend desplegado" -ForegroundColor Green
+Write-Host "OK Backend desplegado" -ForegroundColor Green
 Write-Host ""
 
-# 5. Service del Backend
-Write-Host "5. Creando Service del Backend..." -ForegroundColor Yellow
+# 7. Service del Backend
+Write-Host "7. Creando Service del Backend..." -ForegroundColor Yellow
 kubectl apply -f kubernetes/service-backend.yaml
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Error al crear el service del backend" -ForegroundColor Red
     exit 1
 }
-Write-Host "✓ Service del Backend creado" -ForegroundColor Green
+Write-Host "OK Service del Backend creado" -ForegroundColor Green
 Write-Host ""
 
-# 6. Deployment del Frontend
-Write-Host "6. Desplegando Frontend..." -ForegroundColor Yellow
+# 8. Deployment del Frontend
+Write-Host "8. Desplegando Frontend..." -ForegroundColor Yellow
 kubectl apply -f kubernetes/deployment-frontend.yaml
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Error al desplegar el frontend" -ForegroundColor Red
     exit 1
 }
-Write-Host "✓ Frontend desplegado" -ForegroundColor Green
+Write-Host "OK Frontend desplegado" -ForegroundColor Green
 Write-Host ""
 
-# 7. Service del Frontend
-Write-Host "7. Creando Service del Frontend..." -ForegroundColor Yellow
+# 9. Service del Frontend
+Write-Host "9. Creando Service del Frontend..." -ForegroundColor Yellow
 kubectl apply -f kubernetes/service-frontend.yaml
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Error al crear el service del frontend" -ForegroundColor Red
     exit 1
 }
-Write-Host "✓ Service del Frontend creado" -ForegroundColor Green
+Write-Host "OK Service del Frontend creado" -ForegroundColor Green
 Write-Host ""
 
-# 8. Ingress (opcional)
-Write-Host "8. Creando Ingress..." -ForegroundColor Yellow
+# 10. Ingress (opcional)
+Write-Host "10. Creando Ingress..." -ForegroundColor Yellow
 kubectl apply -f kubernetes/ingress.yaml
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "⚠ Advertencia: Error al crear el ingress (puede ser normal si no tienes ingress controller)" -ForegroundColor Yellow
+    Write-Host "Advertencia: Error al crear el ingress (puede ser normal si no tienes ingress controller)" -ForegroundColor Yellow
 }
 else {
-    Write-Host "✓ Ingress creado" -ForegroundColor Green
+    Write-Host "OK Ingress creado" -ForegroundColor Green
 }
 Write-Host ""
 
-# 9. Verificar el rollout
+# 11. Verificar el rollout
 Write-Host "=====================================" -ForegroundColor Cyan
 Write-Host "Verificando Despliegue..." -ForegroundColor Cyan
 Write-Host "=====================================" -ForegroundColor Cyan
 Write-Host ""
+
+Write-Host "Esperando rollout de MySQL..." -ForegroundColor Yellow
+kubectl rollout status deployment/mysql-deployment -n dev-app --timeout=2m
 
 Write-Host "Esperando rollout del backend..." -ForegroundColor Yellow
 kubectl rollout status deployment/backend-deployment -n dev-app --timeout=2m
@@ -122,15 +150,23 @@ kubectl get ingress -n dev-app
 Write-Host ""
 
 Write-Host "=====================================" -ForegroundColor Green
-Write-Host "¡Despliegue Completado!" -ForegroundColor Green
+Write-Host "Despliegue Completado!" -ForegroundColor Green
 Write-Host "=====================================" -ForegroundColor Green
 Write-Host ""
-Write-Host "Para acceder a la aplicación:" -ForegroundColor Cyan
-Write-Host "  kubectl get service frontend-service -n dev-app" -ForegroundColor White
+Write-Host "Aplicacion lista en:" -ForegroundColor Cyan
+Write-Host "   Frontend: http://localhost" -ForegroundColor White
+Write-Host "   Backend:  http://localhost:3000" -ForegroundColor White
 Write-Host ""
-Write-Host "Para ver logs del backend:" -ForegroundColor Cyan
-Write-Host "  kubectl logs -f deployment/backend-deployment -n dev-app" -ForegroundColor White
+Write-Host "Comandos utiles:" -ForegroundColor Cyan
+Write-Host "  Ver logs del backend:" -ForegroundColor Yellow
+Write-Host "    kubectl logs -f deployment/backend-deployment -n dev-app" -ForegroundColor White
 Write-Host ""
-Write-Host "Para escalar el backend:" -ForegroundColor Cyan
-Write-Host "  kubectl scale deployment backend-deployment --replicas=5 -n dev-app" -ForegroundColor White
+Write-Host "  Ver logs de MySQL:" -ForegroundColor Yellow
+Write-Host "    kubectl logs -f deployment/mysql-deployment -n dev-app" -ForegroundColor White
+Write-Host ""
+Write-Host "  Escalar el backend:" -ForegroundColor Yellow
+Write-Host "    kubectl scale deployment backend-deployment --replicas=5 -n dev-app" -ForegroundColor White
+Write-Host ""
+Write-Host "  Ver todos los recursos:" -ForegroundColor Yellow
+Write-Host "    kubectl get all -n dev-app" -ForegroundColor White
 Write-Host ""

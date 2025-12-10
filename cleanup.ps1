@@ -1,11 +1,11 @@
 # Script para eliminar el despliegue de Kubernetes
 
 Write-Host "=====================================" -ForegroundColor Red
-Write-Host "Eliminando Aplicación de Kubernetes" -ForegroundColor Red
+Write-Host "Eliminando Aplicacion de Kubernetes" -ForegroundColor Red
 Write-Host "=====================================" -ForegroundColor Red
 Write-Host ""
 
-$confirm = Read-Host "¿Estás seguro de eliminar todo el namespace 'dev-app'? (s/n)"
+$confirm = Read-Host "Estas seguro de eliminar todo el namespace 'dev-app'? (s/n)"
 
 if ($confirm -eq "s" -or $confirm -eq "S") {
     Write-Host ""
@@ -14,17 +14,17 @@ if ($confirm -eq "s" -or $confirm -eq "S") {
     
     if ($LASTEXITCODE -eq 0) {
         Write-Host ""
-        Write-Host "✓ Todos los recursos han sido eliminados" -ForegroundColor Green
+        Write-Host "Todos los recursos han sido eliminados" -ForegroundColor Green
         Write-Host ""
     }
     else {
         Write-Host ""
-        Write-Host "✗ Error al eliminar recursos" -ForegroundColor Red
+        Write-Host "Error al eliminar recursos" -ForegroundColor Red
         Write-Host ""
     }
 }
 else {
     Write-Host ""
-    Write-Host "Operación cancelada" -ForegroundColor Yellow
+    Write-Host "Operacion cancelada" -ForegroundColor Yellow
     Write-Host ""
 }
